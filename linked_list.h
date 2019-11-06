@@ -2,6 +2,9 @@
 // https://stackoverflow.com/questions/7109964/creating-your-own-header-file-in-c
 // https://stackoverflow.com/questions/7186103/how-to-elegantly-implement-a-series-of-functions-in-different-type-versions-usin/7186396#7186396
 
+#ifndef COL_LINKED_LIST_H
+#define COL_LINKED_LIST_H
+
 #include <iostream>
 
 template <class T>
@@ -35,6 +38,7 @@ class LinkedList {
         void start_loop();
         int next(T*, int*);
         int next(T*);
+        T* to_array();
 };
 
 
@@ -141,6 +145,19 @@ void LinkedList<T>::print() {
 }
 
 template <class T>
+T* LinkedList<T>::to_array() {
+    T * result;
+    result = (T*)malloc(sizeof(T) * this->get_length());
+    T current_value;
+    int position;
+    this->start_loop();
+    while(this->next(&current_value, &position)) {
+        result[sizeof(T) * position] = current_value;
+    }
+    return result;
+}
+
+template <class T>
 LinkedList<T>::~LinkedList() {
     Node<T> *current_node;
     Node<T> *next_node;
@@ -202,3 +219,5 @@ template <class T>
 int LinkedList<T>::get_length() {
     return this->length;
 }
+
+#endif
