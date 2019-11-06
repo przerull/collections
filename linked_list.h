@@ -20,7 +20,9 @@ class LinkedList {
     private:
         Node<T> *first_node;
         Node<T> *last_node;
+        Node<T> *loop_cursor;
         int length;
+        int iteration_counter;
     public:
         LinkedList<T>();
         ~LinkedList<T>();
@@ -30,6 +32,9 @@ class LinkedList {
         T poplast(int*);
         void print();
         int get_length();
+        void start_loop();
+        int next(T*, int*);
+        int next(T*);
 };
 
 
@@ -60,6 +65,7 @@ LinkedList<T>::LinkedList() {
     this->first_node = NULL;
     this->last_node = NULL;
     this->length = 0;
+    this->iteration_counter = 0;
 }
 
 
@@ -94,17 +100,44 @@ void LinkedList<T>::prepend(T value) {
 }
 
 template <class T>
-void LinkedList<T>::print() {
-    Node<T> *current_node;
-    if(this->first_node != NULL) {
-        current_node = this->first_node;
-        while(current_node != NULL) {
-            std::cout << current_node->value;
-            std::cout << "->";
-            current_node = current_node->next_node;
+void LinkedList<T>::start_loop() {
+    this->iteration_counter = 0;
+    this->loop_cursor = this->first_node;
+}
+
+template <class T>
+int LinkedList<T>::next(T *result, int *iteration_counter) {
+    int needs_to_continue;
+    if(this->loop_cursor == NULL) {
+        needs_to_continue= 0;
+    } else {
+        needs_to_continue = 1;
+        if(iteration_counter != NULL) {
+            *iteration_counter = this->iteration_counter;
         }
-        printf("\n");
+        if(result != NULL) {
+            *result = this->loop_cursor->value;
+        }
+        this->loop_cursor = this->loop_cursor->next_node;
+        this->iteration_counter = this->iteration_counter + 1;
     }
+    return needs_to_continue;
+}
+
+template <class T>
+int LinkedList<T>::next(T *result) {
+    return this->next(result, NULL);
+}
+
+template <class T>
+void LinkedList<T>::print() {
+    T current_value;
+    this->start_loop();
+    while(this->next(&current_value)) {
+        std::cout << current_value;
+        std::cout << "->";
+    }
+    std::cout << "\n";
 }
 
 template <class T>
