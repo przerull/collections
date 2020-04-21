@@ -20,6 +20,9 @@ class CollectionsConan(ConanFile):
         if tools.get_env("CONAN_RUN_TESTS", True):
             self.run('ctest --output-on-failure')
 
+    def build_requirements(self):
+        self.build_requires('gtest/1.10.0')
+
 
     def package(self):
         self.copy("*.h")
