@@ -19,7 +19,14 @@ class CollectionsConan(ConanFile):
         cmake.configure()
         cmake.build()
         if tools.get_env("CONAN_RUN_TESTS", True):
-            self.run('ctest --output-on-failure')
+            self.run('''
+                valgrind ./bin/Collections_test \
+                --leak-check=full \
+                --error-exitcode=1
+                '''.strip())
+            print('running coverage')
+            self.run('gcov -r -b test.cpp collections/linked_list.h')
+            print('coverage complete')
 
     def build_requirements(self):
         self.build_requires('gtest/1.10.0')
