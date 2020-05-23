@@ -1,39 +1,70 @@
 #include <string>
 #include <iostream>
 #include <gtest/gtest.h>
-#include "linked_list.h"
+#include <collections/linked_list.h>
 
 
-TEST(ZZZZZZ, YYYYYY) {
-    ASSERT_EQ(1, 2);
+
+class LinkedListTest: public ::testing::Test {
+    protected:
+        void SetUp() override {
+            mylist.append(1);
+            mylist.append(2);
+            mylist.append(3);
+            mylist.append(4);
+            mylist.append(5);
+        }
+
+        LinkedList<int> mylist;
+};
+
+TEST_F(LinkedListTest, TestGetLength) {
+    ASSERT_EQ(mylist.get_length(), 5);
 }
-//#include <fructose/fructose.h>
 
+TEST_F(LinkedListTest, TestPopfirstEmptyList) {
+    LinkedList<int> list2;
+    int value;
+    value = 123;
+    ASSERT_EQ(list2.popfirst(&value), status::EMPTY_LIST);
+    ASSERT_EQ(value, 123);
+}
 
-//struct simpletest : public fructose::test_base<simpletest> {
-//    void test_get_length(const std::string& test_name) {
-//        LinkedList<int> mylist;
-//        mylist.append(1);
-//        mylist.append(2);
-//        mylist.append(3);
-//        mylist.append(4);
-//        mylist.append(5);
-//        fructose_assert(mylist.get_length() == 5);
-//    }
-//};
+TEST_F(LinkedListTest, TestPopFirst) {
+    int value;
+    ASSERT_EQ(mylist.popfirst(&value), status::SUCCESS);
+    ASSERT_EQ(value, 1);
+    ASSERT_EQ(mylist.popfirst(&value), status::SUCCESS);
+    ASSERT_EQ(value, 2);
+    ASSERT_EQ(mylist.popfirst(&value), status::SUCCESS);
+    ASSERT_EQ(value, 3);
+    ASSERT_EQ(mylist.popfirst(&value), status::SUCCESS);
+    ASSERT_EQ(value, 4);
+    ASSERT_EQ(mylist.popfirst(&value), status::SUCCESS);
+    ASSERT_EQ(value, 5);
+    ASSERT_EQ(mylist.popfirst(&value), status::EMPTY_LIST);
+    ASSERT_EQ(value, 5);
+}
+
+TEST_F(LinkedListTest, TestPopLast) {
+    int value;
+    ASSERT_EQ(mylist.poplast(&value), status::SUCCESS);
+    ASSERT_EQ(value, 5);
+    ASSERT_EQ(mylist.poplast(&value), status::SUCCESS);
+    ASSERT_EQ(value, 4);
+    ASSERT_EQ(mylist.poplast(&value), status::SUCCESS);
+    ASSERT_EQ(value, 3);
+    ASSERT_EQ(mylist.poplast(&value), status::SUCCESS);
+    ASSERT_EQ(value, 2);
+    ASSERT_EQ(mylist.poplast(&value), status::SUCCESS);
+    ASSERT_EQ(value, 1);
+    ASSERT_EQ(mylist.poplast(&value), status::EMPTY_LIST);
+    ASSERT_EQ(value, 1);
+}
+
 
 
 //int main(int argc, char** argv) {
-//    //simpletest tests;
-//    //tests.add_test("test_get_length", &simpletest::test_get_length);
-//    //tests.run(argc, argv);
-//    LinkedList<int> mylist;
-//    mylist.append(1);
-//    mylist.append(2);
-//    mylist.append(3);
-//    mylist.append(4);
-//    mylist.append(5);
-//    mylist.print();
 //
 //    LinkedList<int>* other_list = new LinkedList<int>();
 //

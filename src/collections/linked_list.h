@@ -173,7 +173,7 @@ LinkedList<T>::~LinkedList() {
 }
 
 
-enum status { SUCCESS, EMPTY_LIST };
+enum status: int { SUCCESS, EMPTY_LIST };
 
 template <class T>
 T LinkedList<T>::popfirst(int *result) {
@@ -181,16 +181,19 @@ T LinkedList<T>::popfirst(int *result) {
     if(this->first_node != NULL) {
         Node<T>* first_node;
         first_node = this->first_node;
-        status = SUCCESS;
+        status = status::SUCCESS;
         if(first_node->next_node != NULL) {
             first_node->next_node->previous_node = NULL;
             this->first_node = first_node->next_node;
+        } else {
+            this->first_node = NULL;
+            this->last_node = NULL;
         }
         *result = first_node->value;
         delete first_node;
         this->length = this->length - 1;
     } else {
-        status = EMPTY_LIST;
+        status = status::EMPTY_LIST;
     }
     return status;
 }
@@ -201,16 +204,19 @@ T LinkedList<T>::poplast(int *result) {
     if(this->last_node!= NULL) {
         Node<T>* last_node;
         last_node = this->last_node;
-        status = SUCCESS;
+        status = status::SUCCESS;
         if(last_node->previous_node != NULL) {
             last_node->previous_node->next_node = NULL;
             this->last_node = last_node->previous_node;
+        } else {
+            this->first_node = NULL;
+            this->last_node = NULL;
         }
         *result = last_node->value;
         delete last_node;
         this->length = this->length - 1;
     } else {
-        status = EMPTY_LIST;
+        status = status::EMPTY_LIST;
     }
     return status;
 }
