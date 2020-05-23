@@ -10,6 +10,7 @@ class CollectionsConan(ConanFile):
     description = "<Description of Collections here>"
     topics = ("<Put some tag here>", "<here>", "<and here>")
     settings = "os", "compiler", "build_type", "arch"
+    generators = 'cmake'
     no_copy_source=True
     exports_sources = "src/*", "CMakeLists.txt", "test.cpp"
 
