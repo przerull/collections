@@ -1,3 +1,4 @@
+import os
 from conans import ConanFile, CMake, tools
 
 
@@ -10,23 +11,21 @@ class CollectionsConan(ConanFile):
     description = "<Description of Collections here>"
     topics = ("<Put some tag here>", "<here>", "<and here>")
     settings = "os", "compiler", "build_type", "arch"
-    generators = 'cmake'
-    no_copy_source=True
-    exports_sources = "src/*", "CMakeLists.txt", "test.cpp"
+    generators = 'compiler_args'
+    exports_sources = "src/*", "test.cpp"
 
     def build(self):
-        cmake = CMake(self)
-        cmake.configure()
-        cmake.build()
-        if tools.get_env("CONAN_RUN_TESTS", True):
-            self.run('''
-                valgrind ./bin/Collections_test \
-                --leak-check=full \
-                --error-exitcode=1
-                '''.strip())
-            print('running coverage')
-            self.run('gcov -r -b test.cpp collections/linked_list.h')
-            print('coverage complete')
+        self.run("mkdir -p bin")
+        print(os.getcwd())
+        self.run('g++ test.cpp -fprofile-arcs -ftest-coverage @conanbuildinfo.args -o bin/test')
+        self.run('''
+            valgrind ./bin/test \
+            --leak-check=full \
+            --error-exitcode=1
+            '''.strip())
+        self.run('gcov -r -b test.cpp')
+        self.run('gcovr -k -b -f src/* . --html --html-details -o coverage.html')
+        self.run('xdg-open coverage.html')
 
     def build_requirements(self):
         self.build_requires('gtest/1.10.0')

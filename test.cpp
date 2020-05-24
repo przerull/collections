@@ -1,7 +1,7 @@
 #include <string>
 #include <iostream>
 #include <gtest/gtest.h>
-#include <collections/linked_list.h>
+#include "src/collections/linked_list.h"
 
 
 
