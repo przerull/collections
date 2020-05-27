@@ -19,12 +19,13 @@ class CollectionsConan(ConanFile):
         print(os.getcwd())
         self.run('g++ test.cpp -fprofile-arcs -ftest-coverage @conanbuildinfo.args -o bin/test')
         self.run('''
-            valgrind ./bin/test \
+            valgrind \
             --leak-check=full \
-            --error-exitcode=1
+            --error-exitcode=1 \
+            ./bin/test
             '''.strip())
-        self.run('gcov -r -b test.cpp')
-        self.run('gcovr -k -b -f src/* . --html --html-details -o coverage.html')
+        self.run('gcov -r test.cpp')
+        self.run('gcovr -k -f src/* . --html --html-details -o coverage.html')
         self.run('xdg-open coverage.html')
 
     def build_requirements(self):

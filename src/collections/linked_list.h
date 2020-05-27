@@ -7,6 +7,8 @@
 
 #include <iostream>
 
+enum status: int { SUCCESS, EMPTY_LIST };
+
 template <class T>
 class Node {
     public:
@@ -24,21 +26,21 @@ class LinkedList {
         Node<T> *first_node;
         Node<T> *last_node;
         Node<T> *loop_cursor;
-        int length;
+        size_t length;
         int iteration_counter;
     public:
         LinkedList<T>();
         ~LinkedList<T>();
         void append(T);
         void prepend(T);
-        T popfirst(int*);
-        T poplast(int*);
+        status popfirst(T*);
+        status poplast(T*);
         void print();
-        int get_length();
+        size_t get_length();
         void start_loop();
-        int next(T*, int*);
+        int next(T*, size_t*);
         int next(T*);
-        T* to_array();
+        status to_array(T**);
 };
 
 
@@ -110,7 +112,7 @@ void LinkedList<T>::start_loop() {
 }
 
 template <class T>
-int LinkedList<T>::next(T *result, int *iteration_counter) {
+int LinkedList<T>::next(T *result, size_t *iteration_counter) {
     int needs_to_continue;
     if(this->loop_cursor == NULL) {
         needs_to_continue= 0;
@@ -145,16 +147,23 @@ void LinkedList<T>::print() {
 }
 
 template <class T>
-T* LinkedList<T>::to_array() {
-    T * result;
-    result = (T*)malloc(sizeof(T) * this->get_length());
-    T current_value;
-    int position;
-    this->start_loop();
-    while(this->next(&current_value, &position)) {
-        result[sizeof(T) * position] = current_value;
+status LinkedList<T>::to_array(T** result) {
+    size_t length = this->get_length();
+    status status;
+    if(length == 0) {
+        status = status::EMPTY_LIST;
+    } else {
+        status = status::SUCCESS;
+        T* new_array = new T[length];
+        this->start_loop();
+        size_t position;
+        T current_value;
+        while(this->next(&current_value, &position)) {
+            new_array[position] = current_value;
+        }
+        *result = new_array;
     }
-    return result;
+    return status;
 }
 
 template <class T>
@@ -173,11 +182,10 @@ LinkedList<T>::~LinkedList() {
 }
 
 
-enum status: int { SUCCESS, EMPTY_LIST };
 
 template <class T>
-T LinkedList<T>::popfirst(int *result) {
-    int status;
+status LinkedList<T>::popfirst(T *result) {
+    status status;
     if(this->first_node != NULL) {
         Node<T>* first_node;
         first_node = this->first_node;
@@ -199,8 +207,8 @@ T LinkedList<T>::popfirst(int *result) {
 }
 
 template <class T>
-T LinkedList<T>::poplast(int *result) {
-    int status;
+status LinkedList<T>::poplast(T *result) {
+    status status;
     if(this->last_node!= NULL) {
         Node<T>* last_node;
         last_node = this->last_node;
@@ -222,7 +230,7 @@ T LinkedList<T>::poplast(int *result) {
 }
 
 template <class T>
-int LinkedList<T>::get_length() {
+size_t LinkedList<T>::get_length() {
     return this->length;
 }
 

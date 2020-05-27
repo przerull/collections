@@ -63,7 +63,43 @@ TEST_F(LinkedListTest, TestPopLast) {
 }
 
 
+TEST_F(LinkedListTest, TestPrepend) {
+    mylist.prepend(-12);
+    ASSERT_EQ(mylist.get_length(), 6);
+    int value;
+    ASSERT_EQ(mylist.popfirst(&value), status::SUCCESS);
+    ASSERT_EQ(value, -12);
+}
 
+
+TEST_F(LinkedListTest, TestPrependEmpty) {
+    LinkedList<int> testlist;
+    ASSERT_EQ(testlist.get_length(), 0);
+    testlist.prepend(8);
+    ASSERT_EQ(testlist.get_length(), 1);
+    int value;
+    ASSERT_EQ(testlist.popfirst(&value), status::SUCCESS);
+    ASSERT_EQ(testlist.get_length(), 0);
+    ASSERT_EQ(value, 8);
+}
+
+TEST_F(LinkedListTest, TestToArray) {
+    int * values;
+    ASSERT_EQ(mylist.to_array(&values), status::SUCCESS);
+    ASSERT_EQ(values[0], 1);
+    ASSERT_EQ(values[1], 2);
+    ASSERT_EQ(values[2], 3);
+    ASSERT_EQ(values[3], 4);
+    ASSERT_EQ(values[4], 5);
+    delete [] values;
+}
+
+
+TEST_F(LinkedListTest, TestToArrayEmpty) {
+    LinkedList<int> testlist;
+    int * values;
+    ASSERT_EQ(testlist.to_array(&values), status::EMPTY_LIST);
+}
 //int main(int argc, char** argv) {
 //
 //    LinkedList<int>* other_list = new LinkedList<int>();
