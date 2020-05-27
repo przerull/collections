@@ -38,8 +38,8 @@ class LinkedList {
         void print();
         size_t get_length();
         void start_loop();
-        int next(T*, size_t*);
-        int next(T*);
+        bool next(T*, size_t*);
+        bool next(T*);
         status to_array(T**);
 };
 
@@ -112,12 +112,12 @@ void LinkedList<T>::start_loop() {
 }
 
 template <class T>
-int LinkedList<T>::next(T *result, size_t *iteration_counter) {
-    int needs_to_continue;
+bool LinkedList<T>::next(T *result, size_t *iteration_counter) {
+    bool needs_to_continue;
     if(this->loop_cursor == NULL) {
-        needs_to_continue= 0;
+        needs_to_continue= false;
     } else {
-        needs_to_continue = 1;
+        needs_to_continue = true;
         if(iteration_counter != NULL) {
             *iteration_counter = this->iteration_counter;
         }
@@ -131,7 +131,7 @@ int LinkedList<T>::next(T *result, size_t *iteration_counter) {
 }
 
 template <class T>
-int LinkedList<T>::next(T *result) {
+bool LinkedList<T>::next(T *result) {
     return this->next(result, NULL);
 }
 
