@@ -33,7 +33,7 @@ class CollectionsConan(ConanFile):
 
 
     def package(self):
-        self.copy("*.h")
+        self.copy("*.h", dst="include", src="src")
 
     def package_id(self):
         self.info.header_only()
