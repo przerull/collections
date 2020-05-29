@@ -3,6 +3,7 @@
 #include <gtest/gtest.h>
 #include "src/collections/linked_list.h"
 
+template class LinkedList<int>;
 
 
 class LinkedListTest: public ::testing::Test {
