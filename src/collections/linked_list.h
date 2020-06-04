@@ -28,8 +28,11 @@ class LinkedList {
         Node<T> *loop_cursor;
         size_t length;
         int iteration_counter;
+        void init();
     public:
         LinkedList<T>();
+        LinkedList<T>(size_t, T*);
+        LinkedList<T>(std::initializer_list<T>);
         ~LinkedList<T>();
         void append(T);
         void prepend(T);
@@ -65,15 +68,35 @@ Node<T>::~Node() {
     this->previous_node = NULL;
 }
 
-
 template <class T>
-LinkedList<T>::LinkedList() {
+void LinkedList<T>::init() {
     this->first_node = NULL;
     this->last_node = NULL;
     this->length = 0;
     this->iteration_counter = 0;
 }
 
+template <class T>
+LinkedList<T>::LinkedList() {
+    this->init();
+}
+
+
+template <class T>
+LinkedList<T>::LinkedList(size_t length, T* array) {
+    this->init();
+    for(size_t i=0;i<length;i++) {
+        this->append(array[i]);
+    }
+}
+
+template <class T>
+LinkedList<T>::LinkedList(std::initializer_list<T> list) {
+    this->init();
+    for(T item : list) {
+        this->append(item);
+    }
+}
 
 template <class T>
 void LinkedList<T>::append(T value) {

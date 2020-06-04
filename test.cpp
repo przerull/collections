@@ -22,6 +22,31 @@ class LinkedListTest: public ::testing::Test {
 TEST_F(LinkedListTest, TestGetLength) {
     ASSERT_EQ(mylist.get_length(), 5);
 }
+TEST_F(LinkedListTest, TestCreateFromArray) {
+    int my_array[5] = {3, 4, 5, 6, 7};
+    LinkedList<int>* newlist = new LinkedList<int>(4, my_array);
+    ASSERT_EQ(newlist->get_length(), 4);
+    newlist->start_loop();
+    int value;
+    ASSERT_EQ(newlist->next(&value), true);
+    ASSERT_EQ(value, 3);
+    ASSERT_EQ(newlist->next(&value), true);
+    ASSERT_EQ(value, 4);
+    ASSERT_EQ(newlist->next(&value), true);
+    ASSERT_EQ(value, 5);
+    ASSERT_EQ(newlist->next(&value), true);
+    ASSERT_EQ(value, 6);
+    ASSERT_EQ(newlist->next(&value), false);
+    ASSERT_EQ(value, 6);
+    newlist->print();
+    delete newlist;
+}
+
+TEST_F(LinkedListTest, TestCreateFromInitializer) {
+    LinkedList<int>* newlist = new LinkedList<int>({2, 3, 4, 5});
+    ASSERT_EQ(newlist->get_length(), 4);
+    delete newlist;
+}
 
 TEST_F(LinkedListTest, TestPopfirstEmptyList) {
     LinkedList<int> list2;
