@@ -1,7 +1,7 @@
 #include <string>
 #include <iostream>
 #include <gtest/gtest.h>
-#include "src/collections/linked_list.h"
+#include <collections/linked_list.h>
 
 template class LinkedList<int>;
 
@@ -126,6 +126,9 @@ TEST_F(LinkedListTest, TestToArrayEmpty) {
     int * values;
     ASSERT_EQ(testlist.to_array(&values), status::EMPTY_LIST);
 }
+
+
+
 //int main(int argc, char** argv) {
 //
 //    LinkedList<int>* other_list = new LinkedList<int>();
