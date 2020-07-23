@@ -8,7 +8,7 @@ HunterGate(
     SHA1 "13775235910a3fa85644568d1c5be8271de72e1c"
 )
 
-project(Collections)
+project(Collections VERSION 0.0.1)
 
 add_library(Collections INTERFACE)
 target_include_directories(Collections INTERFACE src/)
