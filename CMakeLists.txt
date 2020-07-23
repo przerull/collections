@@ -11,7 +11,10 @@ HunterGate(
 project(Collections VERSION 0.0.1)
 
 add_library(Collections INTERFACE)
-target_include_directories(Collections INTERFACE src/)
+target_include_directories(Collections INTERFACE 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+    $<INSTALL_INTERFACE:src>  # <prefix>/src
+)
 
 
 hunter_add_package(GTest)
@@ -42,6 +45,14 @@ configure_package_config_file(
 	INSTALL_DESTINATION "${config_install_dir}"
 )
 
+install(
+	TARGETS Collections
+	EXPORT "${targets_export_name}"
+	LIBRARY DESTINATION "lib"
+	ARCHIVE DESTINATION "lib"
+	RUNTIME DESTINATION "bin"
+	INCLUDES DESTINATION "include"
+)
 
 install(
 	DIRECTORY "src/"
@@ -50,5 +61,11 @@ install(
 
 install(
 	FILES "${project_config}" "${version_config}"
+	DESTINATION "${config_install_dir}"
+)
+
+install(
+	EXPORT "${targets_export_name}"
+	NAMESPACE "Collections::"
 	DESTINATION "${config_install_dir}"
 )
