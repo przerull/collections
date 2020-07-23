@@ -5,8 +5,19 @@ build() {
     cmake --build build
 }
 
+install() {
+    DESTDIR=./install cmake --install build
+}
+
 clean() {
     rm -rf build
+    rm -rf install
+}
+
+full() {
+    clean
+    build
+    install
 }
 
 show_help() {
@@ -20,11 +31,17 @@ else
 fi
 
 case $command in
+    full)
+        full
+    ;;
     build)
         build
     ;;
     clean)
         clean
+    ;;
+    install)
+        install
     ;;
     *)
         show_help
