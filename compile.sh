@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
 
 build() {
-    mkdir build
-    pushd build
-    cmake ..
-    cmake --build .
-    popd
+    cmake . -Bbuild
+    cmake --build build
 }
 
 clean() {
